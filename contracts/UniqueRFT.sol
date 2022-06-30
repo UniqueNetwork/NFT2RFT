@@ -1,11 +1,11 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.8.2;
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+// import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 
 //import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
-import "./UniqueNFT.sol";
+import "./iUniqueRFT.sol";
 
-contract UniqueRFT is ERC20Burnable, UniqueNFT {
+contract UniqueRFT is iUniqueRFT  {
     address public collection;
     uint256 public tokenID;
     string private _name;
@@ -44,10 +44,7 @@ contract UniqueRFT is ERC20Burnable, UniqueNFT {
 
 
 
-    function onERC721Received(address operator, address from, uint256 tokenId, bytes calldata data)  public override pure returns(bytes4) {
-            return bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"));
-        }
-    
+
     
 /*     function approve
     function balanceOf
@@ -58,11 +55,11 @@ contract UniqueRFT is ERC20Burnable, UniqueNFT {
     function totalSupply
     function transfer
     function transferFrom */
-    function burn(uint256 amount) public virtual override (ERC20Burnable, ERC721Burnable) {
+    function burn(uint256 amount) public virtual override (ERC20Burnable) {
         _burn(_msgSender(), amount);
     }
 
-    function burnFrom(address account, uint256 amount) public virtual override (ERC20Burnable, ERC721UniqueExtensions)  {
+    function burnFrom(address account, uint256 amount) public virtual override (ERC20Burnable)  {
         uint256 currentAllowance = allowance(account, _msgSender());
         require(currentAllowance >= amount, "ERC20: burn amount exceeds allowance");
         unchecked {
@@ -74,7 +71,7 @@ contract UniqueRFT is ERC20Burnable, UniqueNFT {
        /**
      * @dev Returns the name of the token.
      */
-    function name() public view virtual override  (ERC20, ERC721Metadata) returns (string memory) {
+    function name() public view virtual override  (ERC20) returns (string memory) {
         return _name;
     }
 
@@ -82,14 +79,14 @@ contract UniqueRFT is ERC20Burnable, UniqueNFT {
      * @dev Returns the symbol of the token, usually a shorter version of the
      * name.
      */
-    function symbol() public view virtual override (ERC20, ERC721Metadata)  returns (string memory) {
+    function symbol() public view virtual override (ERC20)  returns (string memory) {
         return _symbol;
     }
 
     /**
      * @dev See {IERC20-totalSupply}.
      */
-    function totalSupply() public view virtual override (ERC20, ERC721Enumerable) returns (uint256) {
+    function totalSupply() public view virtual override (ERC20) returns (uint256) {
         return _totalSupply;
     }
 
@@ -101,7 +98,7 @@ contract UniqueRFT is ERC20Burnable, UniqueNFT {
      * - `recipient` cannot be the zero address.
      * - the caller must have a balance of at least `amount`.
      */
-    function transfer(address recipient, uint256 amount) public virtual override (ERC20, ERC721UniqueExtensions ) returns (bool) {
+    function transfer(address recipient, uint256 amount) public virtual override (ERC20 ) returns (bool) {
         _transfer(_msgSender(), recipient, amount);
         return true;
     }
@@ -123,7 +120,7 @@ contract UniqueRFT is ERC20Burnable, UniqueNFT {
         address sender,
         address recipient,
         uint256 amount
-    ) public virtual override (ERC20, ERC721) returns (bool) {
+    ) public virtual override (ERC20) returns (bool) {
         _transfer(sender, recipient, amount);
 
         uint256 currentAllowance = _allowances[sender][_msgSender()];
@@ -141,7 +138,7 @@ contract UniqueRFT is ERC20Burnable, UniqueNFT {
      *
      * - `spender` cannot be the zero address.
      */
-    function approve(address spender, uint256 amount) public virtual override (ERC20, ERC721) returns (bool) {
+    function approve(address spender, uint256 amount) public virtual override (ERC20) returns (bool) {
         _approve(_msgSender(), spender, amount);
         return true;
     }
@@ -150,7 +147,7 @@ contract UniqueRFT is ERC20Burnable, UniqueNFT {
     /**
      * @dev See {IERC20-balanceOf}.
      */
-    function balanceOf(address account) public view virtual override (ERC20, ERC721) returns (uint256) {
+    function balanceOf(address account) public view virtual override (ERC20) returns (uint256) {
         return _balances[account];
     }
 
